@@ -3,7 +3,7 @@ Organised responsive components system in less for node.
 
 ## Installation
 ```shell
-  npm install scapegoat --save
+  npm install responsive-components
 ```
 ## Usage
 ```js
