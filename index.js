@@ -30,9 +30,9 @@ module.exports = {
             
             for(var platformName in platforms){
                 if(!platforms.hasOwnProperty(platformName)) continue;
-                var reg = new RegExp(escape("#"+componentName +"." + platformName + "()"),'ig');
+                var reg = new RegExp(escape("."+componentName +"-" + platformName + "()"),'ig');
                 if(reg.test(filecontent)) continue;
-                fs.appendFileSync(filepath,"\n#"+componentName +"." + platformName + "() {\n}\n\n"); 
+                fs.appendFileSync(filepath,"\n."+componentName +"-" + platformName + "() {\n}\n\n"); 
             }
             
         }
@@ -53,8 +53,8 @@ module.exports = {
             for(var i= 0;i<components.length; i++){
                 var componentName = components[i];
                 filecontent += 
-                    "\t/* Component "+componentName +"." + platformName + " */\n" +
-                    "\t#"+componentName +"." + platformName + "();\n\n";
+                    "\t/* Component "+componentName +" on " + platformName + " */\n" +
+                    "\t."+componentName +"-" + platformName + "();\n\n";
             }
             filecontent += "}\n\n";
             fs.writeFileSync(filepath, fileheader+"\n\n" + filecontent);
