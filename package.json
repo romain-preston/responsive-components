@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/romain-preston/responsive-components/issues"
   },
-  "homepage": "https://github.com/romain-preston/responsive-components#readme"
+  "homepage": "https://github.com/romain-preston/responsive-components#readme",
+  "dependencies": {
+    "escape-regex": ">= 0.0.1"
+  }
 }
