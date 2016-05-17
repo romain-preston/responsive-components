@@ -1,19 +1,6 @@
 var fs = require('fs');
 var escape = require('escape-regexp');
-var debug = {
-    path:"styles",
-    output:"components.less",
-    components : [
-        "base",
-        "example"
-    ],
-    platforms : {
-        base:{},
-        mobile:{max:"600px"},
-        tablet:{min:"601px", max:"600px"},
-        tabletVertical:{min:"601px", max:"600px",query:"orientation:vertical"}
-    }
-}
+
 exports.update = (config) => {
     var basepath = config.path;
     var components = config.components;
@@ -87,4 +74,3 @@ exports.update = (config) => {
     var output = config.output ? config.output :"components.less";
     fs.writeFileSync(basepath + "/" + output, componentsheader+"\n\n" + componentscontent);
 } 
-exports.update(debug);
