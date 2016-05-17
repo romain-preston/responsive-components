@@ -1,0 +1,24 @@
+{
+  "name": "responsive-components",
+  "version": "1.0.0",
+  "description": "Organised responsive components system in less",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://romain-preston@github.com/romain-preston/responsive-components.git"
+  },
+  "keywords": [
+    "less",
+    "responsive",
+    "components"
+  ],
+  "author": "Romain Preston <romain@ourcompany.ch> (http://ourcompany.ch)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/romain-preston/responsive-components/issues"
+  },
+  "homepage": "https://github.com/romain-preston/responsive-components#readme"
+}
