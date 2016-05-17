@@ -1,6 +1,11 @@
 # responsive-components
 Organised responsive components system in less for node.
 
+## Installation
+```shell
+  npm install scapegoat --save
+```
+## Usage
 ```js
 var responsive = require('responsive-components');
 var config = {
@@ -21,3 +26,11 @@ var config = {
 
 responsive.update(config)
 ```
+
+## Release History
+
+* 1.0.0 Initial release
+* 1.0.1 Cleanup debugging functions
+* 1.0.2 Proper module exports
+* 1.0.3 Fix function naming and namespace in less 
+* 1.0.4 Add dependencies in package
