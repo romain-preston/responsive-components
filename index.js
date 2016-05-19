@@ -67,7 +67,7 @@ module.exports = {
             componentsheader += "@import \"platforms/@"+platformName+".less\";\n";
             var mediaQuery = "@media screen ";
             if(platform.min) mediaQuery += " and (min-width: "+platform.min+")";
-            if(platform.max) mediaQuery += " and (min-width: "+platform.max+")";
+            if(platform.max) mediaQuery += " and (max-width: "+platform.max+")";
             if(platform.query) mediaQuery += " and ("+platform.query+")"; 
             componentscontent += mediaQuery + " {\n\t."+platformName +"();\n}\n\n";
         }
