@@ -65,7 +65,8 @@ module.exports = {
             if(!platforms.hasOwnProperty(platformName)) continue;
             var platform = platforms[platformName];
             componentsheader += "@import \"platforms/@"+platformName+".less\";\n";
-            var mediaQuery = "@media screen ";
+            var media = platform.media ? platform.media : "screen";
+            var mediaQuery = "@media "+media+" ";
             if(platform.min) mediaQuery += " and (min-width: "+platform.min+")";
             if(platform.max) mediaQuery += " and (max-width: "+platform.max+")";
             if(platform.query) mediaQuery += " and ("+platform.query+")"; 

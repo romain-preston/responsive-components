@@ -20,7 +20,8 @@ var config = {
         mobile:{max:"600px"},
         tablet:{min:"601px", max:"1000px"},
         tabletVertical:{min:"601px", max:"1000px",query:"orientation:vertical"},
-        big:{min:"1001px"}
+        big:{min:"1001px"},
+        print:{media:"print"}
     }
 }
 
@@ -34,3 +35,4 @@ responsive.update(config)
 * 1.0.2 Proper module exports
 * 1.0.3 Fix function naming and namespace in less 
 * 1.0.4 Add dependencies in package
+* 1.0.5 Add media for platform 
