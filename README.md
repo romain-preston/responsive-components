@@ -6,6 +6,7 @@ Organised responsive components system in less for node.
   npm install responsive-components
 ```
 ## Usage
+### using an configuration object
 ```js
 var responsive = require('responsive-components');
 var config = {
@@ -25,7 +26,15 @@ var config = {
     }
 }
 
-responsive.update(config)
+responsive.update(config);
+```
+### using an external file
+```js
+responsive.update("Styles/mycomponents.json"); // using custom path
+```
+
+```js
+responsive.update(); // will try to find "components.config.json" in the current directory
 ```
 
 ## Release History
@@ -36,3 +45,4 @@ responsive.update(config)
 * 1.0.3 Fix function naming and namespace in less 
 * 1.0.4 Add dependencies in package
 * 1.0.5 Add media for platform 
+* 1.0.6 Now accepts path and defaults to components.config.json
