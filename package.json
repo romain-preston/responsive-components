@@ -1,6 +1,6 @@
 {
   "name": "responsive-components",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "Organised responsive components system in less",
   "main": "index.js",
   "scripts": {
