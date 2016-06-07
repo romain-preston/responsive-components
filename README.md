@@ -40,24 +40,23 @@ responsive.update(); // will try to find "components.config.json" in the current
 ## Configuration
 ### Config Reference
 
-name | Required | Description
------------- | ------------- | ------------- 
-path | false | @string : the relative path. Defaults to "Styles"
-output | false | @string : the final output file name. Defaults to "components.less"
-components | true | @string[] : the list of component names.
-platforms | true | @object[] : the list of platforms as objects as described bellow
+Name | Required | Type | Description | Default | Example
+------------ | ------------- | ------------- | ------------- | ------------- | ------------- 
+path | false | string | the relative path. | Styles | "Styles"
+output | false | string | the final output file name. | components.less | "output.less"
+components | true | string[] | the list of component names. |  | ["base", "button" ]
+platforms | true | {key:string, platform:object} | the list of platforms as described bellow. |  | { base:{}, tablet:{min:"601px", max:"1000px"}}
 
 ### Platform Reference
 The platform object supports the following attributes : 
 
-name | Required | Description
------------- | ------------- | ------------- 
-min | false | @string : the minimum width. Example : "700px"
-max | false | @string : the maximum width. Example : "1024px"
-orientation | false | @string : the platform orientation. Example : "vertical"
-query | false | @string : additional query. Example : "-webkit-min-device-pixel-ratio:2"
-media | false | @string : the platform's media. Defaults to "screen". Example : "print"
-
+Name | Type | Description | Example
+------------ | ------------- | ------------- | ------------- 
+min | string | the minimum width | "700px"
+max | string | the maximum width | "1024px"
+orientation | string | the platform orientation | "vertical"
+query | string | additional query | "-webkit-min-device-pixel-ratio:2"
+media | string | the platform's media. Defaults to "screen". | "print"
 
 
 ## Release History
