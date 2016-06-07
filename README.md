@@ -37,6 +37,29 @@ responsive.update("Styles/mycomponents.json"); // using custom path
 responsive.update(); // will try to find "components.config.json" in the current directory
 ```
 
+## Configuration
+### Config Reference
+
+name | Required | Description
+------------ | ------------- | ------------- 
+path | false | @string : the relative path. Defaults to "Styles"
+output | false | @string : the final output file name. Defaults to "components.less"
+components | true | @string[] : the list of component names.
+platforms | true | @object[] : the list of platforms as objects as described bellow
+
+### Platform Reference
+The platform object supports the following attributes : 
+
+name | Required | Description
+------------ | ------------- | ------------- 
+min | false | @string : the minimum width. Example : "700px"
+max | false | @string : the maximum width. Example : "1024px"
+orientation | false | @string : the platform orientation. Example : "vertical"
+query | false | @string : additional query. Example : "-webkit-min-device-pixel-ratio:2"
+media | false | @string : the platform's media. Defaults to "screen". Example : "print"
+
+
+
 ## Release History
 
 * 1.0.0 Initial release
