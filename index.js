@@ -1,12 +1,38 @@
 var fs = require('fs');
+var path = require('path');
+var glob = require('glob');
 var escape = require('escape-regexp');
+
+const _addComponentFile = (platforms, componentsDir, componentName) => {
+    var filepath = componentsDir + "/@" + componentName + ".less";
+    var exists = fs.existsSync(filepath);
+    var filecontent = "";
+    if (!exists) fs.writeFileSync(filepath, "/* Component " + componentName + " */\n\n");
+    else filecontent = fs.readFileSync(filepath);
+
+    for (var platformName in platforms) {
+        if (!platforms.hasOwnProperty(platformName)) continue;
+        var reg = new RegExp(escape("." + componentName + "-" + platformName + "()"), 'ig');
+        if (reg.test(filecontent)) continue;
+        fs.appendFileSync(filepath, "\n." + componentName + "-" + platformName + "() {\n}\n\n");
+    }
+    return filepath;
+}
+
+const camelToDash = str => str
+    .replace(/(^[A-Z])/, (first) => first.toLowerCase())
+    .replace(/([A-Z])/g, (letter) => `-${letter.toLowerCase()}`)
+
 var _update = function (config) {
 
     var basepath = config.path || "Styles";
-    var components = config.components;
+    var components = typeof config.components === "string" ? [] : config.components;
+    var componentsPattern = typeof config.components === "string" ? config.components : "";
+
     var platforms = config.platforms;
     var componentsDir = basepath + "/components";
     var platformsDir = basepath + "/platforms";
+    var componentFiles = [];
 
     if (!fs.existsSync(basepath)) {
         fs.mkdirSync(basepath);
@@ -22,18 +48,27 @@ var _update = function (config) {
 
     for (var i = 0; i < components.length; i++) {
         var componentName = components[i];
-        var filepath = componentsDir + "/@" + componentName + ".less";
-        var exists = fs.existsSync(filepath);
-        var filecontent = "";
-        if (!exists) fs.writeFileSync(filepath, "/* Component " + componentName + " */\n\n");
-        else filecontent = fs.readFileSync(filepath);
+        var filepath = _addComponentFile(platforms, omponentsDir, componentName);
+        componentFiles.push(filepath);
+    }
 
-        for (var platformName in platforms) {
-            if (!platforms.hasOwnProperty(platformName)) continue;
-            var reg = new RegExp(escape("." + componentName + "-" + platformName + "()"), 'ig');
-            if (reg.test(filecontent)) continue;
-            fs.appendFileSync(filepath, "\n." + componentName + "-" + platformName + "() {\n}\n\n");
-        }
+    // add components using path : 
+    if (componentsPattern) {
+        // we look for directories
+        componentsPattern = componentsPattern[componentsPattern.length] == "/" ? componentsPattern : (componentsPattern + "/");
+        glob(componentsPattern, { ignore: ["node_modules"] }, function (er, files) {
+            // files is an array of filenames. 
+            // If the `nonull` option is set, and nothing 
+            // was found, then files is ["**/*.js"] 
+            // er is an error object or null. 
+            files.forEach(file => {
+                var componentName = path.basename(file);
+                var filepath = _addComponentFile(platforms, file, camelToDash(componentName));
+
+                componentFiles.push(filepath);
+            });
+        })
+
     }
 
     for (var platformName in platforms) {
@@ -42,11 +77,11 @@ var _update = function (config) {
         var filepath = platformsDir + "/@" + platformName + ".less";
         var fileheader = "";
         var filecontent = "/* Platform " + platformName + " */\n\n";
-        for (var i = 0; i < components.length; i++) {
-            var componentName = components[i];
-            var componentpath = "../components/@" + componentName + ".less";
+        componentFiles.forEach(componentFile => {
+            var componentpath = path.relative(filepath, componentFile);
             fileheader += "@import \"" + componentpath + "\";\n";
-        }
+        });
+
 
         filecontent += "." + platformName + "() {\n";
         for (var i = 0; i < components.length; i++) {
