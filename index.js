@@ -1,10 +1,12 @@
 var fs = require('fs');
 var path = require('path');
+var find = require('find');
 var glob = require('glob');
+
 var escape = require('escape-regexp');
 
 const _addComponentFile = (platforms, componentsDir, componentName) => {
-    var filepath = componentsDir + "/@" + componentName + ".less";
+    var filepath = componentsDir + "@" + componentName + ".less";
     var exists = fs.existsSync(filepath);
     var filecontent = "";
     if (!exists) fs.writeFileSync(filepath, "/* Component " + componentName + " */\n\n");
@@ -26,8 +28,8 @@ const camelToDash = str => str
 var _update = function (config) {
 
     var basepath = config.path || "Styles";
-    var components = typeof config.components === "string" ? [] : config.components;
-    var componentsPattern = typeof config.components === "string" ? config.components : "";
+    var components = config.components;
+    var componentsPattern = config.pattern || "";
 
     var platforms = config.platforms;
     var componentsDir = basepath + "/components";
@@ -45,51 +47,51 @@ var _update = function (config) {
     if (!fs.existsSync(platformsDir)) {
         fs.mkdirSync(platformsDir);
     }
-
-    for (var i = 0; i < components.length; i++) {
-        var componentName = components[i];
-        var filepath = _addComponentFile(platforms, omponentsDir, componentName);
-        componentFiles.push(filepath);
-    }
+    if(components)
+        components.forEach(componentName => {
+            var filepath = _addComponentFile(platforms, componentsDir, camelToDash(componentName));
+            componentFiles.push({ name: camelToDash(componentName), path: filepath });
+        });
 
     // add components using path : 
     if (componentsPattern) {
         // we look for directories
         componentsPattern = componentsPattern[componentsPattern.length] == "/" ? componentsPattern : (componentsPattern + "/");
-        glob(componentsPattern, { ignore: ["node_modules"] }, function (er, files) {
-            // files is an array of filenames. 
-            // If the `nonull` option is set, and nothing 
-            // was found, then files is ["**/*.js"] 
-            // er is an error object or null. 
-            files.forEach(file => {
-                var componentName = path.basename(file);
-                var filepath = _addComponentFile(platforms, file, camelToDash(componentName));
+        var files = glob.sync(componentsPattern, { ignore: ["node_modules"] });
 
-                componentFiles.push(filepath);
-            });
-        })
+        files.forEach(file => {
+            var componentName = path.basename(file);
+            var filepath = _addComponentFile(platforms, file, camelToDash(componentName));
+
+            componentFiles.push({ name: camelToDash(componentName), path: filepath });
+        });
 
     }
 
     for (var platformName in platforms) {
+        
         if (!platforms.hasOwnProperty(platformName)) continue;
         var platform = platforms[platformName];
         var filepath = platformsDir + "/@" + platformName + ".less";
         var fileheader = "";
         var filecontent = "/* Platform " + platformName + " */\n\n";
         componentFiles.forEach(componentFile => {
-            var componentpath = path.relative(filepath, componentFile);
+            
+            var dirname = path.dirname(filepath);
+            
+            var componentpath = path.relative(dirname, componentFile.path);
+            console.log(componentpath, filepath, componentFile.path);
             fileheader += "@import \"" + componentpath + "\";\n";
         });
 
 
         filecontent += "." + platformName + "() {\n";
-        for (var i = 0; i < components.length; i++) {
-            var componentName = components[i];
+        componentFiles.forEach(componentFile => {
+            var componentName = componentFile.name;
             filecontent +=
                 "\t/* Component " + componentName + " on " + platformName + " */\n" +
                 "\t." + componentName + "-" + platformName + "();\n\n";
-        }
+        });
         filecontent += "}\n\n";
         fs.writeFileSync(filepath, fileheader + "\n\n" + filecontent);
     }

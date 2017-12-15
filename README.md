@@ -16,6 +16,7 @@ var config = {
         "base",
         "button"
     ],
+    pattern : "Views/**/Components/*/",
     platforms : {
         base:{},
         mobile:{max:"600px"},
@@ -44,7 +45,8 @@ Name | Required | Type | Description | Default | Example
 ------------ | ------------- | ------------- | ------------- | ------------- | ------------- 
 path | false | string | the relative path. | Styles | "Styles"
 output | false | string | the final output file name. | components.less | "output.less"
-components | true | string[] | the list of component names. |  | ["base", "button" ]
+components | true | string[] | the list of component names. | [ ] | ["base", "button" ]
+pattern | true | string | folder pattern to discover components |  | "Views/**/Components/*/"
 platforms | true | {key:string, platform:object} | the list of platforms as described bellow. |  | { base:{}, tablet:{min:"601px", max:"1000px"}}
 
 ### Platform Reference
