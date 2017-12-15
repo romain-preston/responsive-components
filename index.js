@@ -49,7 +49,7 @@ var _update = function (config) {
     }
     if(components)
         components.forEach(componentName => {
-            var filepath = _addComponentFile(platforms, componentsDir + "/", camelToDash(componentName));
+            var filepath = _addComponentFile(platforms, componentsDir + "", camelToDash(componentName));
             componentFiles.push({ name: camelToDash(componentName), path: filepath });
         });
 
@@ -80,7 +80,7 @@ var _update = function (config) {
             var dirname = path.dirname(filepath);
             
             var componentpath = path.relative(dirname, componentFile.path);
-            console.log(componentpath, filepath, componentFile.path);
+            
             fileheader += "@import \"" + componentpath + "\";\n";
         });
 
