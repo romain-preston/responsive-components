@@ -49,7 +49,7 @@ var _update = function (config) {
     }
     if(components)
         components.forEach(componentName => {
-            var filepath = _addComponentFile(platforms, componentsDir + "", camelToDash(componentName));
+            var filepath = _addComponentFile(platforms, componentsDir + "/", camelToDash(componentName));
             componentFiles.push({ name: camelToDash(componentName), path: filepath });
         });
 
